@@ -1,9 +1,8 @@
-// Check if Promise is not defined
-class MyPromise {
+class CustomPromise {
     constructor(executor) {
-        this.state = 'pending';
+        this.status = "pending";
         this.resolvedCallbacks = [];
-        this.errorCallbacks = [];
+        this.rejectedCallback = [];
         try {
             executor(this.resolve.bind(this), this.reject.bind(this));
         }
@@ -12,49 +11,47 @@ class MyPromise {
         }
     }
     resolve(value) {
-        if (this.state === 'pending') {
-            this.state = 'fulfilled';
-            this.value = value;
-            this.resolvedCallbacks.forEach(callback => callback(value));
+        if (this.status === "pending") {
+            this.status = "fullfilled";
+            this.resolvedvalue = value;
+            this.resolvedCallbacks.forEach((callback) => callback(value));
         }
     }
-    reject(reason) {
-        if (this.state === 'pending') {
-            this.state = 'rejected';
-            this.value = undefined;
-            this.errorCallbacks.forEach(callback => callback(reason));
+    reject(value) {
+        if (this.status === "pending") {
+            this.status = "rejected";
+            this.rejectedvalue = value;
+            this.rejectedCallback.forEach((callback) => callback(value));
         }
     }
-    then(onFulfilled) {
-        if (this.state === 'fulfilled') {
-            onFulfilled === null || onFulfilled === void 0 ? void 0 : onFulfilled(this.value);
+    then(resolved) {
+        if (this.status === "fullfilled") {
+            resolved === null || resolved === void 0 ? void 0 : resolved(this.resolvedvalue);
         }
-        else if (this.state === 'pending') {
-            if (typeof onFulfilled === 'function')
-                this.resolvedCallbacks.push(onFulfilled);
+        else if (this.status === "pending") {
+            if (typeof resolved == "function")
+                this.resolvedCallbacks.push(resolved);
         }
         return this;
     }
-    catch(onRejected) {
-        if (this.state === 'rejected') {
-            onRejected === null || onRejected === void 0 ? void 0 : onRejected(this.value);
+    catch(rejected) {
+        if (this.status === "rejected") {
+            rejected === null || rejected === void 0 ? void 0 : rejected(this.rejectedvalue);
         }
-        else if (this.state === 'pending') {
-            if (typeof onRejected === 'function')
-                this.errorCallbacks.push(onRejected);
+        else if (this.status === "pending") {
+            if (typeof rejected === "function")
+                this.rejectedCallback.push(rejected);
         }
         return this;
     }
 }
-// Now you can use Promises in your TypeScript code
-const myPromise = new MyPromise((resolve, reject) => {
+let promise = new CustomPromise((resolve, reject) => {
     setTimeout(() => {
-        reject('Rejected');
-        resolve('Hello, World!');
-    }, 1000);
+        resolve("Hello Gaurav");
+    }, 10000);
 });
-myPromise.then(value => {
-    console.log(value);
+promise.then((data) => {
+    console.log(data);
 }).catch((error) => {
     console.error(error);
 });
