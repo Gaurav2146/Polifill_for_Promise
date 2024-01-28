@@ -17,11 +17,6 @@ let promise3 = new CustomPromise_1.CustomPromise((resolve, reject) => {
         resolve("Hello Gaurav");
     }, 3000);
 });
-// promise.then((data:string)=>{
-//  console.log(data);
-// }).catch((error)=>{
-//   console.error(error);
-// })
 let all_promise = new Promise_All_1.Promise_All();
 all_promise.all([promise1, promise2, promise3]).then((result) => {
     console.log(result, "result");

@@ -24,7 +24,6 @@ class Promise_All {
                 this.error_callback.forEach((callback) => callback(error));
             });
         }
-        this.all = this.all.bind(this);
         return this;
     }
     then(callback) {
